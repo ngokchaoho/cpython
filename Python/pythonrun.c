@@ -26,6 +26,7 @@
 
 #include "errcode.h"              // E_EOF
 #include "marshal.h"              // PyMarshal_ReadLongFromFile()
+#include "greeting.h"
 
 #ifdef MS_WINDOWS
 #  include "malloc.h"             // alloca()
@@ -133,6 +134,7 @@ _PyRun_InteractiveLoopObject(FILE *fp, PyObject *filename, PyCompilerFlags *flag
     int err = 0;
     int ret;
     int nomem_count = 0;
+    say_something("Hello Python");
     do {
         ret = PyRun_InteractiveOneObjectEx(fp, filename, flags);
         if (ret == -1 && PyErr_Occurred()) {
@@ -159,6 +161,7 @@ _PyRun_InteractiveLoopObject(FILE *fp, PyObject *filename, PyCompilerFlags *flag
         }
 #endif
     } while (ret != E_EOF);
+    say_something("Bye");
     return err;
 }
 
@@ -753,6 +756,7 @@ handle_system_exit(void)
 {
     int exitcode;
     if (_Py_HandleSystemExit(&exitcode)) {
+        say_something("Bye");
         Py_Exit(exitcode);
     }
 }
